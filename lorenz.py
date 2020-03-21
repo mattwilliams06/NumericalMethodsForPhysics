@@ -100,6 +100,6 @@ def main(pos, param_r):
     plt.show()
 
 if __name__ == '__main__':
-    pos = [1, 1, 20.05]
-    param_r = 100
+    pos = [-8.5, -8.5, 27.]
+    param_r = 28
     main(pos, param_r)
