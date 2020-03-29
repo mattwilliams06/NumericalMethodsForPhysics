@@ -11,23 +11,23 @@ def derivsHO(state, t, tau, params):
 
 	derivs = np.empty(len(state))
 	derivs[3] = ((-k1 - k2)*x1 + k2*x2 + k1*L1 - k2*L2)/m1
-	derivs[4] = (k2*x1 + (-k2 - k3)*x2 + k3*x3 + k2*L2 - k3*L3)/m2
+	derivs[4] = (k2*x1 + (-k2 - k3)*x2 + k2*x3 + k2*L2 - k3*L3)/m2
 	derivs[5] = (k3*x2 + (-k3 - k4)*x3 + k3*L3 + (Lw - L4)*k4)/m3
-	derivs[0] = v1 #+ derivs[3] * tau
-	derivs[1] = v2 #+ derivs[4] * tau
-	derivs[2] = v3 #+ derivs[5] * tau
+	derivs[0] = v1 + derivs[3] * tau
+	derivs[1] = v2 + derivs[4] * tau
+	derivs[2] = v3 + derivs[5] * tau
 
 	return derivs
 
 def rk4(x, t, tau, params):
 	half_tau = 0.5 * tau
-	F1 = derivsHO(x, t, tau, params)
+	F1 = derivsHO(x, t + tau, tau, params)
 	xtemp = x + half_tau * F1
 	F2 = derivsHO(xtemp, t + half_tau, tau, params)
 	xtemp = x + half_tau * F2
 	F3 = derivsHO(xtemp, t + half_tau, tau, params)
 	xtemp = x + tau * F3
 	F4 = derivsHO(xtemp, t + tau, tau, params)
-	xout = x + tau/6. * (F1 + 2*F2 + 2*F3 + F4)
+	xout = tau/6. * (F1 + 2*F2 + 2*F3 + F4)
 
 	return xout
