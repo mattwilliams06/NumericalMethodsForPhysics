@@ -16,7 +16,7 @@ L3 = 1.
 L4 = np.arange(0.5, 6, 0.1)
 
 # Total length of system
-Lw = 10.
+Lw = 5.
 Frw = np.empty(len(L4))
 X = np.empty((len(L4), 3))
 for i, L in enumerate(L4):
@@ -55,7 +55,10 @@ Frw_calc = -k4 * (Lw - X3_min - L4_min)
 print(f'Frw calc: {Frw_calc}')
 
 plt.plot(L4, Frw)
+plt.hlines(Frw_min, xmin=0, xmax=L4_min, colors='red', linestyles='dashed', label='L4 at min force')
+plt.vlines(L4_min, ymin=0, ymax=Frw[0], colors='red', linestyles='dashed')
 plt.xlabel('Rest length of spring 4 (m)')
 plt.ylabel('Force on the right wall (N)')
 plt.title(f'Force on right wall vs L4 with L1 = {L1}, L2 = {L2}, L3 = {L3}, and Lw = {Lw}')
+plt.legend()
 plt.show()
