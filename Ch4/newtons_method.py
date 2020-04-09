@@ -8,7 +8,7 @@ is equal to zero.
 h = 1e-3
 print(f'h = {h:.3f}')
 def func(x):
-	y = (-x**3 + 2)
+	y = (-x**6 + 2)
 	return y
 
 def dfunc(h, xold, xnew, func):
@@ -42,9 +42,13 @@ def newton(x0, func, deriv, tol=1e-3):
 			print('Convergence obtained')
 			print(f'Root: x = {xold:.3f}')
 			# return xold
-	xgraph = np.linspace(xplot[0] - 5, xplot[-1] + 5, 1000)
+	if xplot[0] > xplot[-1]:
+		xgraph = np.linspace(xplot[-1] - 1, xplot[0] + 1, 1000)
+	else:
+		xgraph = np.linspace(xplot[0] + 1, xplot[-1] - 1, 1000)
 	ygraph = func(xgraph)
 	plt.plot(xgraph, ygraph)
+	plt.hlines(0., xgraph[-1], xgraph[0])
 	for i in range(len(xplot)-1):
 		plt.plot([xplot[i], xplot[i+1]], [yplot[i], 0.], 'r--')
 		plt.plot(xplot[-1], 0., 'g*')
@@ -54,4 +58,4 @@ def newton(x0, func, deriv, tol=1e-3):
 
 
 if __name__ == '__main__':
-	newton(10, func, dfunc)
+	newton(1, func, dfunc)
