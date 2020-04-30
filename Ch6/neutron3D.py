@@ -43,7 +43,7 @@ def neutrn3D():
     plot_step = nstep / nplots
 
     # Set up initial and boundary conditions
-    nn = np.zeros((N, N, N))         # Initialize neutron density at all points and times to be 0
+    nn = np.zeros((N, N, N))         # Initialize neutron density at all points to be 0
     nn[int(N/4), int(N/2), int(N/4)] =  1 / hx   # Triangular delta function in middle of pile
     # As is, the boundary conditions are Dirichlet on the edges (neutron density = 0 due to leakage)
 
