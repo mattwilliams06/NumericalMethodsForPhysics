@@ -1,7 +1,8 @@
 def neutrn3D():
     ''' Program to determine the 3-dimensional critical volume of a nuclear pile. The program uses a
     forward time-centered space (FTCS) scheme to solve the diffusion equation, a system of partial differential
-    equations in space and time.
+    equations in space and time. This is a modification of the 1-dimensional version in Numerical Methods for Physics
+    to 3-dimensions.
 
     Author: Matt Williams
     matt.williams@alum.mit.edu
@@ -84,18 +85,6 @@ def neutrn3D():
     ax.set_ylabel('y (m)')
     ax.set_zlabel('neutron density (x, t)')
     ax.set_title(f'Neutron density at half core-height')
-
-    # fig = plt.figure()
-    # ax = fig.gca(projection="3d")
-    # xplot = np.arange(N) * hx - Lx / 2
-    # yplot = np.arange(N) * hy - Ly / 2
-    # zplot = np.arange(N) * hz - Lz / 2
-    # Xp, Yp, Zp = np.meshgrid(xplot, yplot, zplot)
-    # ax.contour3D(Xp, Yp, Zp, nnplot[-1, :, :, int((N - 1) / 2)], cmap=cm.jet)
-    # ax.set_xlabel('x (m)')
-    # ax.set_ylabel('y (m)')
-    # ax.set_zlabel('neutron density (x, t)')
-    # ax.set_title(f'Neutron density at z = {Lz/2}')
 
     # Plot average neutron density vs time
     fig = plt.figure()
