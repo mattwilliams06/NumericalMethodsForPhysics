@@ -5,7 +5,7 @@ def main():
     from mpl_toolkits.mplot3d import Axes3D
 
     # Initialize parameters
-    method = 3   # 1 == Jacobi, 2 == Gauss-Seidel, 3 == SOR
+    method = 2   # 1 == Jacobi, 2 == Gauss-Seidel, 3 == SOR
     N = 50       # Number of grid points on each side
     L = 1.       # Length of system
     h = L/(N-1)  # Grid spacing
@@ -23,14 +23,14 @@ def main():
     phi = np.empty((N, N))
     for i in range(N):
         for j in range(N):
-            phi[i, j] = phi0 * .0001/(np.pi*np.sinh(np.pi)) * \
+            phi[i, j] = phi0 * 4./(np.pi*np.sinh(np.pi)) * \
                         np.sin(np.pi*x[i]/L) * np.sinh(np.pi*y[j]/L)
 
     # Set boundary conditions
-    phi[0, :] = 0.
-    phi[-1, :] = 0.
+    phi[0, :] = phi0*np.ones(N)
+    phi[-1, :] = phi0*np.ones(N)
     phi[:, 0] = 0.
-    phi[:, -1] = phi0*np.ones(N)
+    phi[:, -1] = 0.
 
     print(f'Potential at y=L is {phi0}')
     print('Potential is zero on all other boundaries')
