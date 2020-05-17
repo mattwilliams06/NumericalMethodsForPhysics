@@ -5,7 +5,11 @@ def main():
 
     # Initialize parameters
     i_imag = 1j               # Imaginary number i
+<<<<<<< HEAD
     N = 60                    # Number of grid points
+=======
+    N = 80                    # Number of grid points
+>>>>>>> 393711137b56316f0a303f8184b6570392fd56a6
     L = 100.                  # System size
     h = L/(N-1)               # Grid spacing
     x = np.arange(N)*h - L/2  # Grid points, -L/2 to L/2
@@ -29,10 +33,13 @@ def main():
     ham[-1, -1] = -2*coeff
     ham[-1, 0] = coeff
 
+<<<<<<< HEAD
     # Dirichlet boundary conditions
     # ham[0, 0] = 0
     # ham[-1, -1] = 0
 
+=======
+>>>>>>> 393711137b56316f0a303f8184b6570392fd56a6
     # Compute the Crank-Nicolson matrix
     dCN = np.dot(np.linalg.inv(np.identity(N)+0.5*i_imag*tau/h_bar*ham),
                  (np.identity(N) - 0.5*i_imag*tau/h_bar*ham))
@@ -59,6 +66,7 @@ def main():
     max_iter = int(L/(velocity*tau) + 0.5)
     plot_iter = max_iter/8
     p_plot = np.empty((N, max_iter+1))
+<<<<<<< HEAD
     e_plot = np.empty(max_iter, dtype=complex)
     p_plot[:, 0] = np.absolute(psi[:])**2
     iplot = 0
@@ -67,11 +75,18 @@ def main():
     momentum = np.empty((max_iter, N))
     psi_vec = np.empty((max_iter+1, N))
     psi_vec[0, :] = np.real(psi)
+=======
+    p_plot[:, 0] = np.absolute(psi[:])**2
+    iplot = 0
+    axisV = [-L/2., L/2., 0., max(p_plot[:, 0])]
+
+>>>>>>> 393711137b56316f0a303f8184b6570392fd56a6
     # Loop over desired number of steps (wave circles system once)
     for iter in range(max_iter):
 
         # Compute new wave function
         psi = np.dot(dCN, psi)
+<<<<<<< HEAD
         # Dirichlet conditions
         psi[0] = 0
         psi[-1] = 0
@@ -85,6 +100,8 @@ def main():
         energy_denom = np.dot(np.conj(psi), psi)
         energy = energy_num/energy_denom
         e_plot[iter] = energy
+=======
+>>>>>>> 393711137b56316f0a303f8184b6570392fd56a6
 
         # Periodically record values for plotting
         if (iter+1) % plot_iter < 1:
@@ -106,6 +123,7 @@ def main():
     plt.ylabel('Probability density at various times')
     plt.show()
 
+<<<<<<< HEAD
     # Plot energy
     plt.plot(np.arange(1, len(e_plot)+1)*tau, np.real(e_plot), np.arange(1, len(e_plot)+1)*tau, np.imag(e_plot), '--')
     plt.xlabel('Time (sec)')
@@ -118,5 +136,7 @@ def main():
     plt.xlabel('Position')
     plt.ylabel('Momentum')
     plt.show()
+=======
+>>>>>>> 393711137b56316f0a303f8184b6570392fd56a6
 if __name__ == '__main__':
     main()
