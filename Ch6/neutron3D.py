@@ -13,6 +13,12 @@ def neutrn3D():
     import matplotlib.pyplot as plt
     from matplotlib import cm
     from mpl_toolkits.mplot3d import Axes3D
+    import imageio
+    import os
+
+    path = './images/'
+    if not os.path.isdir(path):
+        os.mkdir(path)
 
     # Initialize system and solver parameters
     tau = 5e-4                    # Time step
@@ -39,13 +45,13 @@ def neutrn3D():
     yplot = np.arange(N)*hy - Ly/2
     zplot = np.arange(N)*hz - Lz/2
     iplot = 0
-    nstep = 10000
+    nstep = 12000
     nplots = 50
     plot_step = nstep / nplots
 
     # Set up initial and boundary conditions
     nn = np.zeros((N, N, N))         # Initialize neutron density at all points to be 0
-    nn[int(N/4), int(N/2), int(N/4)] =  1 / hx   # Triangular delta function in middle of pile
+    nn[int(N/2), int(N/2), int(N/2)] =  1 / hx   # Triangular delta function in middle of pile
     # As is, the boundary conditions are Dirichlet on the edges (neutron density = 0 due to leakage)
 
 
@@ -75,19 +81,34 @@ def neutrn3D():
             iplot += 1
             print(f'Finished {istep} of {nstep} steps')
 
+    # fig = plt.figure()
+    # ax = fig.gca(projection="3d")
+    # xplot = np.arange(N)*hx - Lx/2
+    # yplot = np.arange(N)*hy - Ly/2
+    # Xp, Yp = np.meshgrid(xplot, yplot)
+    # ax.plot_surface(Xp, Yp, nnplot[-1, :, :, int((N-1)/2)], rstride=2, cstride=2, cmap=cm.jet)
+    # ax.set_xlabel('x (m)')
+    # ax.set_ylabel('y (m)')
+    # ax.set_zlabel('neutron density (x, t)')
+    # ax.set_title(f'Neutron density at half core-height')
+
+    fnames = []
+    images = []
     fig = plt.figure()
     ax = fig.gca(projection="3d")
     xplot = np.arange(N)*hx - Lx/2
     yplot = np.arange(N)*hy - Ly/2
     Xp, Yp = np.meshgrid(xplot, yplot)
-    ax.plot_surface(Xp, Yp, nnplot[-1, :, :, int((N-1)/2)], rstride=2, cstride=2, cmap=cm.jet)
-    ax.set_xlabel('x (m)')
-    ax.set_ylabel('y (m)')
-    ax.set_zlabel('neutron density (x, t)')
-    ax.set_title(f'Neutron density at half core-height')
+    for i in range(nplots):
+        ax.plot_surface(Xp, Yp, nnplot[i, :, :, int((N - 1) / 2)], rstride=2, cstride=2, cmap=cm.jet)
+        plt.savefig(f'./images/pile{i}.png')
+        fnames.append(f'./images/pile{i}.png')
+    for fname in fnames:
+        images.append(imageio.imread(fname))
+    imageio.mimsave('./core.gif', images)
 
     # Plot average neutron density vs time
-    fig = plt.figure()
+    plt.figure()
     plt.plot(tplot, nAve, '*')
     plt.xlabel('time')
     plt.ylabel('Total average density')

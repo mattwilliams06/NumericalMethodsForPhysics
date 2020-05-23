@@ -5,12 +5,21 @@ def neutrn():
 
     # Initialize parameters
     tau = 5e-4
+    a = 10.
     N = 61
-    L = 4
-    h = L/(N-1)
+    L = 0.341
+    Lext = L*a
+    h = Lext/(N-1)
     D = 1.        # Neutron diffusion coefficent (m^2/s)
     C = 1.        # Generation rate (1/s)
     coeff = D * tau / h**2
+
+    ## Diffuser addition ##
+    ## Uncomment next 3 lines for diffuser ##
+    C = np.zeros(N)
+    h_arr = np.array([h*i for i in range(N)])
+    C[(h_arr >= Lext/4) & (h_arr <= 3*Lext/4)] = 1.
+
     coeff2 = C * tau
     if coeff < 0.5:
         print('Solution expected to be stable')
@@ -24,7 +33,7 @@ def neutrn():
     # As is, the boundary conditions are Dirichlet on the edges (neutron density = 0 due to leakage)
 
     # Set up loop and plot variables
-    xplot = np.arange(N)*h - L/2
+    xplot = np.arange(N)*h - Lext/2
     iplot = 0
     nstep = 12000
     nplots = 50
@@ -35,7 +44,7 @@ def neutrn():
     tplot = np.empty(nplots)
     nAve = np.empty(nplots)
     for istep in range(nstep): ## MAIN LOOP ##
-        nn[1:(N-1)] = nn[1:(N-1)] + coeff * (nn[2:N] + nn[0:(N-2)] - 2*nn[1:(N-1)]) + coeff2 * nn[1:(N-1)]
+        nn[1:(N-1)] = nn[1:(N-1)] + coeff * (nn[2:N] + nn[0:(N-2)] - 2*nn[1:(N-1)]) + coeff2[1:(N-1)] * nn[1:(N-1)]
 
         # Periodically record density for plotting
         if (istep + 1) % plot_step < 1:
